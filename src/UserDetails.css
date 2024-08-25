@@ -1,0 +1,19 @@
+.user-detail {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .user-detail h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .user-detail p {
+    font-size: 1rem;
+    margin: 10px 0;
+  }
+  
