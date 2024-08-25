@@ -1,51 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import './Weather.css'; // استيراد ملف CSS
+import './Weather.css';
 
-function Weather() {
-  const [weather, setWeather] = useState(null);
+function Countries() {
+  const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [city, setCity] = useState('London');  
 
   useEffect(() => {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=YOUR_API_KEY&units=metric`)
-      .then(response => {
+    const fetchCountries = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('https://restcountries.com/v3.1/all');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.json();
-      })
-      .then(data => {
-        setWeather(data);
-        setLoading(false);
-      })
-      .catch(error => {
+        const data = await response.json();
+        setCountries(data);
+      } catch (error) {
+        console.error('Fetch error:', error);
         setError(error);
+      } finally {
         setLoading(false);
-      });
-  }, [city]);
+      }
+    };
 
-  const handleChangeCity = (e) => {
-    setCity(e.target.value);
-  };
+    fetchCountries();
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!weather) return <div>No weather data available</div>;
+  if (countries.length === 0) return <div>No countries found</div>;
 
   return (
-    <div className="weather-container">
-      <h1>Weather in {weather.name}</h1>
-      <p>Temperature: {weather.main.temp} °C</p>
-      <p>Weather: {weather.weather[0].description}</p>
-      <input
-        type="text"
-        value={city}
-        onChange={handleChangeCity}
-        placeholder="Enter city"
-      />
+    <div className="countries-container">
+      <h1>Countries List</h1>
+      <ul>
+        {countries.map(country => (
+          <li key={country.cca3}>
+            <h2>{country.name.common}</h2>
+            <p>Capital: {country.capital?.[0]}</p>
+            <p>Population: {country.population}</p>
+            <p>Region: {country.region}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default Weather;
+export default Countries;
