@@ -29,7 +29,11 @@ function TodoList() {
   };
 
   const handleDeleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));
+    // عرض رسالة تأكيد
+    const confirmDelete = window.confirm('هل أنت متأكد أنك تريد حذف هذه المهمة؟');
+    if (confirmDelete) {
+      setTasks(tasks.filter((_, i) => i !== index));
+    }
   };
 
   return (
@@ -73,3 +77,5 @@ function TodoList() {
 }
 
 export default TodoList;
+
+
